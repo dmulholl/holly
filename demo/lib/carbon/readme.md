@@ -1,6 +1,6 @@
-# Graphite
+# Carbon
 
-A simple Ivy theme designed for generating project documentation.
+A blog-capable Ivy theme with support for post and tag indexes.
 
 
 ## Includes
