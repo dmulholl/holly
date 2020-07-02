@@ -11,7 +11,7 @@ from setuptools import setup
 
 setup(
     name = 'holly',
-    version = '0.1.0',
+    version = '0.2.0',
     py_modules = ['holly'],
     author = 'Darren Mulholland',
     url = 'https://github.com/dmulholl/holly',

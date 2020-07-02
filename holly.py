@@ -34,13 +34,13 @@ def init():
             per_page = home.get('per_page', 10)
             make_homepage_index(root_urls, sort_func, sort_rev, per_page)
         for root in config.get('roots', []):
-            index_url = root.get('index_url')
+            root_url = root.get('root_url', '')
             tag_slug = root.get('tag_slug', 'tags')
             sort_func = root.get('sort_func')
             sort_rev = root.get('reverse', True)
             per_page = root.get('per_page', 10)
             per_tag_page = root.get('per_tag_page', 100)
-            if node := ivy.nodes.node(index_url):
+            if node := ivy.nodes.node(root_url):
                 make_node_index(node, sort_func, sort_rev, per_page)
                 make_tag_indexes(node, tag_slug, sort_func, sort_rev, per_tag_page)
 
@@ -71,7 +71,7 @@ def make_homepage_index(root_urls, sort_func, sort_rev, per_page):
 
 
 # Assembles an index of all the node's descendant leaf nodes. Attaches this index to the node.
-# Recursively generates a similar index for all descendant directory nodes.
+# Recursively generates a similar index for all descendant parent nodes.
 def make_node_index(node, sort_func, sort_rev, per_page):
     entries = []
     for child in node.children:
@@ -90,13 +90,13 @@ def make_node_index(node, sort_func, sort_rev, per_page):
 # Checks all descendant nodes of the root node for tag strings. Parses tags, converts them into
 # Tag objects, assembles a set of tag index pages and attaches them to the root node.
 def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
-    tags_node = root_node.child(tag_slug)
-    if tags_node is None:
-        tags_node = ivy.nodes.Node()
-        root_node.children.append(tags_node)
-        tags_node.parent = root_node
-        tags_node['slug'] = tag_slug
-        tags_node['title'] = 'Tags'
+    tag_base = root_node.child(tag_slug)
+    if tag_base is None:
+        tag_base = ivy.nodes.Node()
+        root_node.children.append(tag_base)
+        tag_base.parent = root_node
+        tag_base['slug'] = tag_slug
+        tag_base['title'] = 'Tags'
 
     tag_map = {}
     url_base = root_node.url.rstrip('/') + f'/{tag_slug}/'
@@ -111,12 +111,12 @@ def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
 
     for tag, node_list in tag_map.items():
         slug = slugify(tag)
-        if tag_node := tags_node.child(slug):
+        if tag_node := tag_base.child(slug):
             tag_node['index'].extend(node_list)
         else:
             tag_node = ivy.nodes.Node()
-            tags_node.children.append(tag_node)
-            tag_node.parent = tags_node
+            tag_base.children.append(tag_node)
+            tag_node.parent = tag_base
             tag_node['title'] = tag
             tag_node['slug'] = slug
             tag_node['index'] = node_list
@@ -125,8 +125,8 @@ def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
         tag_node['is_tag_index'] = True
         split_index(tag_node, per_tag_page)
 
-    tags_node['is_tag_base'] = True
-    tags_node.children.sort(key=lambda n: n.get('title', ''))
+    tag_base['is_tag_base'] = True
+    tag_base.children.sort(key=lambda n: n.get('title', ''))
 
 
 def sort_index(node_list, sort_func, sort_rev):

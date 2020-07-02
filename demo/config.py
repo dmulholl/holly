@@ -14,16 +14,10 @@ holly = {
     },
     "roots": [
         {
-            "index_url": "@root/blog//",
+            "root_url": "@root/blog//",
         },
         {
-            "index_url": "@root/animalia//",
-        },
-        {
-            "index_url": "@root/fakelink//",
-            "tag_slug": "tags",
-            "sort_func": None,
-            "reverse": True,
+            "root_url": "@root/animalia//",
         },
     ],
 }
