@@ -112,7 +112,7 @@ def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
     for tag, node_list in tag_map.items():
         slug = slugify(tag)
         if tag_node := tag_base.child(slug):
-            tag_node['index'].extend(node_list)
+            tag_node.meta.setdefault('index', []).extend(node_list)
         else:
             tag_node = ivy.nodes.Node()
             tag_base.children.append(tag_node)
