@@ -133,8 +133,8 @@ def sort_index(node_list, sort_func, sort_rev):
     if sort_func:
         node_list.sort(key=sort_func, reverse=sort_rev)
     else:
-        default_date = datetime.datetime(2000, 1, 1)
-        node_list.sort(key=lambda n: n.filepath, reverse=True)
+        default_date = datetime.date(2000, 1, 1)
+        node_list.sort(key=lambda n: n.filepath)
         node_list.sort(key=lambda n: n.get('date') or default_date, reverse=True)
 
 
