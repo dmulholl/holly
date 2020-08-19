@@ -177,7 +177,6 @@ def next_url(base_url, page_num, total_pages):
 
 
 class Tag:
-
     def __init__(self, name, url):
         self.name = name
         self.url = url
