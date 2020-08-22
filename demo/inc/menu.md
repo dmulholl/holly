@@ -6,6 +6,4 @@
     * [Wales](@root/blog/wales//)
 * [Animalia](@root/animalia//)
 * [Elements](@root/elements//)
-* [Code](@root/code//)
-* [Images](@root/images//)
-* [Short](@root/short//)
+
