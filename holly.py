@@ -5,7 +5,7 @@ import ivy
 from ivy.utils import slugify
 
 
-# Inserts CSS classes for index pages.
+# Add CSS classes for index pages.
 @ivy.filters.register('page_classes')
 def add_classes(class_list, page):
     if page['node'].get('is_index'):
