@@ -3,7 +3,7 @@ import math
 import datetime
 
 
-# Add CSS classes for index pages.
+# This callback adds CSS classes to index paages.
 @ivy.filters.register('page_classes')
 def add_classes(class_list, page):
     if page['node'].get('is_index'):
