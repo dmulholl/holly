@@ -1,8 +1,6 @@
-import datetime
-import math
 import ivy
-
-from ivy.utils import slugify
+import math
+import datetime
 
 
 # Add CSS classes for index pages.
@@ -106,11 +104,11 @@ def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
         node['tags'] = []
         for tag in (t.strip() for t in tagstring.split(',') if t.strip()):
             tag_map.setdefault(tag, []).append(node)
-            node['tags'].append(Tag(tag, url_base + slugify(tag) + '//'))
+            node['tags'].append(Tag(tag, url_base + ivy.utils.slugify(tag) + '//'))
     root_node.walk(tag_parser)
 
     for tag, node_list in tag_map.items():
-        slug = slugify(tag)
+        slug = ivy.utils.slugify(tag)
         if tag_node := tag_base.child(slug):
             tag_node.meta.setdefault('index', []).extend(node_list)
         else:
