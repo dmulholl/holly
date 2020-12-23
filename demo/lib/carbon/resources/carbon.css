@@ -471,18 +471,14 @@ th, td {
  * -------------------------------------------------------------------------
  */
 
-.entry h3 a {
-    border-bottom: none;
-}
-
-.entry .thumbnail {
+.image-strip {
     height: 175px;
     position: relative;
     overflow: hidden;
     margin: 40px 0;
 }
 
-.entry .thumbnail img {
+.image-strip img {
     margin: 0;
     padding: 0;
     position: absolute;
@@ -493,6 +489,10 @@ th, td {
     -webkit-transform: translate(-50%,-50%);
         -ms-transform: translate(-50%,-50%);
             transform: translate(-50%,-50%);
+}
+
+.entry h3 a {
+    border-bottom: none;
 }
 
 .entry .teaser {

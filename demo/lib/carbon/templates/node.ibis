@@ -12,7 +12,7 @@
         {% endif %}
         {{ inc.head }}
     </head>
-    <body class="{{{ classes|join:' ' }}}">
+    <body class="{{{ classes|join(' ') }}}">
         <header class="masthead">
             <h1><a href="@root/">{{ site.title || "Site Title" }}</a></h1>
             {% if site.tagline %}
@@ -37,14 +37,24 @@
                 {% endif %}
                 {% if node.subtitle %}
                     <p class="subtitle">{{ node.subtitle }}</p>
+                {% elif node.date %}
+                    <p class="subtitle">
+                        {{ node.date|dtformat("%B") }} {{ node.date.day }}, {{ node.date.year }}
+                    </p>
                 {% endif %}
                 <hr>
             </header>
 
+            {% if node.image %}
+                <div class="image-strip">
+                    <img src="@root/images/{{{ node.image }}}">
+                </div>
+            {% endif %}
+
             {{ node.html }}
 
             {% if node.tags %}
-                <p class="tags">Tagged: &nbsp;{{ node.tags|join:',&nbsp; ' }}</p>
+                <p class="tags">Tagged: &nbsp;{{ node.tags|join(',&nbsp; ') }}</p>
             {% endif %}
 
             {% if node.is_node_index || node.is_homepage_index %}
@@ -53,7 +63,7 @@
                         <h3><a href="{{{ entry.url }}}">{{ entry.title }}</a></h3>
 
                         {% if entry.image %}
-                            <div class="thumbnail">
+                            <div class="image-strip">
                                 <a href="{{{ entry.url }}}">
                                     <img src="@root/images/{{{ entry.image }}}">
                                 </a>
@@ -61,7 +71,7 @@
                         {% endif %}
 
                         <div class="teaser">
-                            <p>{{ entry.intro || entry.html|firstp|striptags|truncatewords:45 }}</p>
+                            <p>{{ entry.intro || entry.html|firstp|striptags|truncatewords(45) }}</p>
                             <p><a href="{{{ entry.url }}}">Read More</a></p>
                         </div>
                     </div>
