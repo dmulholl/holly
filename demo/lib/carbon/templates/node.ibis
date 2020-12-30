@@ -8,11 +8,11 @@
         <link rel="stylesheet" href="@root/carbon.css">
         <link rel="stylesheet" href="@root/pygments.css">
         {% if node.meta_description %}
-            <meta name="description" content="{{{ node.meta_description.strip() }}}">
+            <meta name="description" content="{$ node.meta_description.strip() $}">
         {% endif %}
         {{ inc.head }}
     </head>
-    <body class="{{{ classes|join(' ') }}}">
+    <body class="{$ classes|join(' ') $}">
         <header class="masthead">
             <h1><a href="@root/">{{ site.title || "Site Title" }}</a></h1>
             {% if site.tagline %}
@@ -47,7 +47,7 @@
 
             {% if node.image %}
                 <div class="image-strip">
-                    <img src="@root/images/{{{ node.image }}}">
+                    <img src="@root/images/{$ node.image $}">
                 </div>
             {% endif %}
 
@@ -60,19 +60,19 @@
             {% if node.is_node_index || node.is_homepage_index %}
                 {% for entry in node.index %}
                     <div class="entry">
-                        <h3><a href="{{{ entry.url }}}">{{ entry.title }}</a></h3>
+                        <h3><a href="{$ entry.url $}">{{ entry.title }}</a></h3>
 
                         {% if entry.image %}
                             <div class="image-strip">
-                                <a href="{{{ entry.url }}}">
-                                    <img src="@root/images/{{{ entry.image }}}">
+                                <a href="{$ entry.url $}">
+                                    <img src="@root/images/{$ entry.image $}">
                                 </a>
                             </div>
                         {% endif %}
 
                         <div class="teaser">
                             <p>{{ entry.intro || entry.html|firstp|striptags|truncatewords(45) }}</p>
-                            <p><a href="{{{ entry.url }}}">Read More</a></p>
+                            <p><a href="{$ entry.url $}">Read More</a></p>
                         </div>
                     </div>
                 {% endfor %}
@@ -81,7 +81,7 @@
             {% if node.is_tag_index %}
                 <ul>
                 {% for entry in node.index %}
-                    <li><a href="{{{ entry.url }}}">{{ entry.title }}</a></li>
+                    <li><a href="{$ entry.url $}">{{ entry.title }}</a></li>
                 {% endfor %}
                 </ul>
             {% endif %}
@@ -89,7 +89,7 @@
             {% if node.is_tag_base %}
                 <ul>
                 {% for child in node.children %}
-                    <li><a href="{{{ child.url }}}">{{ child.title }}</a></li>
+                    <li><a href="{$ child.url $}">{{ child.title }}</a></li>
                 {% endfor %}
                 </ul>
             {% endif %}
