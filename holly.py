@@ -3,34 +3,21 @@ import math
 import datetime
 
 
-# This callback adds CSS classes to index paages.
-@ivy.filters.register('page_classes')
-def add_classes(class_list, page):
-    if page['node'].get('is_index'):
-        class_list.append('index')
-    if page['node'].get('is_node_index'):
-        class_list.append('node-index')
-    if page['node'].get('is_tag_index'):
-        class_list.append('tag-index')
-    if page['node'].get('is_homepage_index'):
-        class_list.append('homepage-index')
-    if page['node'].get('is_paged'):
-        class_list.append('paged')
-    if page['node'].get('is_tag_base'):
-        class_list.append('tag-base')
-    return class_list
-
-
-# All indexes are generated on this hook.
+# This callback generates the indexes. (An index is an ordered list of nodes
+# attached to a node via an 'index' property.)
 @ivy.events.register('init_build')
 def init():
     if config := ivy.site.config.get('holly'):
+
+        # Generate the homepage index.
         if home := config.get('homepage'):
             root_urls = home.get('root_urls', [])
             sort_func = home.get('sort_func')
             sort_rev = home.get('reverse', True)
             per_page = home.get('per_page', 10)
             make_homepage_index(root_urls, sort_func, sort_rev, per_page)
+
+        # Generate directory and tag indexes.
         for root in config.get('roots', []):
             root_url = root.get('root_url', '')
             tag_slug = root.get('tag_slug', 'tags')
@@ -43,15 +30,33 @@ def init():
                 make_tag_indexes(node, tag_slug, sort_func, sort_rev, per_tag_page)
 
 
+# This callback adds CSS classes to index pages.
+@ivy.filters.register('class_list')
+def add_classes(class_list, node):
+    if node.get('is_index'):
+        class_list.append('index')
+    if node.get('is_node_index'):
+        class_list.append('node-index')
+    if node.get('is_tag_index'):
+        class_list.append('tag-index')
+    if node.get('is_homepage_index'):
+        class_list.append('homepage-index')
+    if node.get('is_paged'):
+        class_list.append('paged')
+    if node.get('is_tag_base'):
+        class_list.append('tag-base')
+    return class_list
+
+
 # Returns a list of all the node's descendant leaf nodes, i.e nodes with no children.
-def leaf_nodes(node):
-    leaves = []
+def get_leaf_nodes(node):
+    leaf_nodes = []
     for child in node.children:
         if child.has_children:
-            leaves.extend(leaf_nodes(child))
+            leaf_nodes.extend(get_leaf_nodes(child))
         else:
-            leaves.append(child)
-    return leaves
+            leaf_nodes.append(child)
+    return leaf_nodes
 
 
 # Assembles a composite index for the homepage.
@@ -59,7 +64,7 @@ def make_homepage_index(root_urls, sort_func, sort_rev, per_page):
     entries = []
     for url in root_urls:
         if node := ivy.nodes.node(url):
-            entries.extend(leaf_nodes(node))
+            entries.extend(get_leaf_nodes(node))
     sort_index(entries, sort_func, sort_rev)
     node = ivy.nodes.root()
     node['index'] = entries
@@ -139,6 +144,7 @@ def sort_index(node_list, sort_func, sort_rev):
 def split_index(node, per_page):
     entries = node['index']
     total_pages = math.ceil(float(len(entries)) / per_page)
+    node['is_paged'] = False
 
     if total_pages > 1:
         node['index'] = entries[0:per_page]
