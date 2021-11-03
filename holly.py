@@ -35,8 +35,8 @@ def init():
 def add_classes(class_list, node):
     if node.get('is_index'):
         class_list.append('index')
-    if node.get('is_node_index'):
-        class_list.append('node-index')
+    if node.get('is_dir_index'):
+        class_list.append('dir-index')
     if node.get('is_tag_index'):
         class_list.append('tag-index')
     if node.get('is_homepage_index'):
@@ -45,6 +45,8 @@ def add_classes(class_list, node):
         class_list.append('paged')
     if node.get('is_tag_base'):
         class_list.append('tag-base')
+    if node.get('is_node_index'): # Deprecated.
+        class_list.append('node-index')
     return class_list
 
 
@@ -85,7 +87,8 @@ def make_node_index(node, sort_func, sort_rev, per_page):
     sort_index(entries, sort_func, sort_rev)
     node['index'] = entries
     node['is_index'] = True
-    node['is_node_index'] = True
+    node['is_dir_index'] = True
+    node['is_node_index'] = True # Deprecated.
     split_index(node, per_page)
     return entries
 

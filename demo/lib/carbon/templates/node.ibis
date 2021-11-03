@@ -57,7 +57,7 @@
                 <p class="tags">Tagged: &nbsp;{{ node.tags|join(',&nbsp; ') }}</p>
             {% endif %}
 
-            {% if node.is_node_index || node.is_homepage_index %}
+            {% if node.is_dir_index || node.is_homepage_index %}
                 {% for entry in node.index %}
                     <div class="entry">
                         <h3><a href="{$ entry.url $}">{{ entry.title }}</a></h3>
