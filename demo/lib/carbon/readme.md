@@ -15,7 +15,10 @@ It will display the following attributes from the site's `config.py` file in the
 * `title`
 * `tagline`
 
-It supports the following includes:
+If a node has an `intro` attribute, this will be shown on index pages;
+otherwise a snippet of text from the node's first paragraph will be used.
+
+This theme supports the following includes:
 
 * `menu`
 
