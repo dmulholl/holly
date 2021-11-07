@@ -1,11 +1,21 @@
 # Carbon
 
-A blog-capable Ivy theme with support for post and tag indexes.
+[1]: https://github.com/dmulholl/ivy
+[2]: http://www.dmulholl.com/demos/holly/
+[3]: https://github.com/dmulholl/holly
+[4]: https://fonts.google.com/specimen/Crimson+Text
 
+A simple, blog-style theme for [Ivy][1] with support for post and tag indexes.
 
-## Includes
+* [Demo][2]
 
-This theme supports the following include files:
+This theme is designed to be used with the [Holly][3] blog-engine plugin.
+It will display the following attributes from the site's `config.py` file in the site header:
+
+* `title`
+* `tagline`
+
+It supports the following includes:
 
 * `menu`
 
@@ -26,8 +36,7 @@ This theme supports the following include files:
     used to add custom JavaScript to a site without directly editing the
     theme's template files.
 
+This theme is distributed under the following license:
 
-## License
-
-* All code and CSS has been placed in the public domain.
-* The bundled Crimson Text font is distributed under the Open Font License.
+* All code has been placed in the public domain.
+* The bundled [Crimson Text][4] font is distributed under the SIL Open Font License.
