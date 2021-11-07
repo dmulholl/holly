@@ -15,8 +15,10 @@ It will display the following attributes from the site's `config.py` file in the
 * `title`
 * `tagline`
 
-If a node has an `intro` attribute, this will be shown on index pages;
+If a node has an `intro` attribute, this will be used as the snippet shown on index pages;
 otherwise a snippet of text from the node's first paragraph will be used.
+
+If a node has an `image` attribute containing the name of an image file stored in an `@root/images/` directory, this will be used as the node's featured image.
 
 This theme supports the following includes:
 
