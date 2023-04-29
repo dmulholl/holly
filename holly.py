@@ -1,13 +1,13 @@
-import ivy
+import ark
 import math
 import datetime
 
 
 # This callback generates the indexes. (An index is an ordered list of nodes
 # attached to a node via an 'index' property.)
-@ivy.events.register('init_build')
+@ark.events.register('init_build')
 def init():
-    if config := ivy.site.config.get('holly'):
+    if config := ark.site.config.get('holly'):
 
         # Generate the homepage index.
         if home := config.get('homepage'):
@@ -25,13 +25,13 @@ def init():
             sort_rev = root.get('reverse', True)
             per_page = root.get('per_page', 10)
             per_tag_page = root.get('per_tag_page', 100)
-            if node := ivy.nodes.node(root_url):
+            if node := ark.nodes.node(root_url):
                 make_node_index(node, sort_func, sort_rev, per_page)
                 make_tag_indexes(node, tag_slug, sort_func, sort_rev, per_tag_page)
 
 
 # This callback adds CSS classes to index pages.
-@ivy.filters.register('class_list')
+@ark.filters.register('class_list')
 def add_classes(class_list, node):
     if node.get('is_index'):
         class_list.append('index')
@@ -45,8 +45,6 @@ def add_classes(class_list, node):
         class_list.append('paged')
     if node.get('is_tag_base'):
         class_list.append('tag-base')
-    if node.get('is_node_index'): # Deprecated.
-        class_list.append('node-index')
     return class_list
 
 
@@ -65,10 +63,10 @@ def get_leaf_nodes(node):
 def make_homepage_index(root_urls, sort_func, sort_rev, per_page):
     entries = []
     for url in root_urls:
-        if node := ivy.nodes.node(url):
+        if node := ark.nodes.node(url):
             entries.extend(get_leaf_nodes(node))
     sort_index(entries, sort_func, sort_rev)
-    node = ivy.nodes.root()
+    node = ark.nodes.root()
     node['index'] = entries
     node['is_index'] = True
     node['is_homepage_index'] = True
@@ -98,7 +96,7 @@ def make_node_index(node, sort_func, sort_rev, per_page):
 def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
     tag_base = root_node.child(tag_slug)
     if tag_base is None:
-        tag_base = ivy.nodes.Node()
+        tag_base = ark.nodes.Node()
         root_node.children.append(tag_base)
         tag_base.parent = root_node
         tag_base['slug'] = tag_slug
@@ -112,15 +110,15 @@ def make_tag_indexes(root_node, tag_slug, sort_func, sort_rev, per_tag_page):
         node['tags'] = []
         for tag in (t.strip() for t in tagstring.split(',') if t.strip()):
             tag_map.setdefault(tag, []).append(node)
-            node['tags'].append(Tag(tag, url_base + ivy.utils.slugify(tag) + '//'))
+            node['tags'].append(Tag(tag, url_base + ark.utils.slugify(tag) + '//'))
     root_node.walk(tag_parser)
 
     for tag, node_list in tag_map.items():
-        slug = ivy.utils.slugify(tag)
+        slug = ark.utils.slugify(tag)
         if tag_node := tag_base.child(slug):
             tag_node.meta.setdefault('index', []).extend(node_list)
         else:
-            tag_node = ivy.nodes.Node()
+            tag_node = ark.nodes.Node()
             tag_base.children.append(tag_node)
             tag_node.parent = tag_base
             tag_node['title'] = tag
@@ -158,7 +156,7 @@ def split_index(node, per_page):
         node['next_url'] = next_url(node.url, 1, total_pages)
 
         for page in range(2, total_pages + 1):
-            page_node = ivy.nodes.Node()
+            page_node = ark.nodes.Node()
             node.children.append(page_node)
             page_node.parent = node
             page_node.meta = node.meta.copy()

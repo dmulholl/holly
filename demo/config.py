@@ -4,7 +4,7 @@
 
 theme = "carbon"
 title = "Holly Demo"
-tagline = "A blog-engine plugin for Ivy."
+tagline = "A blog-engine plugin for Ark."
 
 extensions = ["holly"]
 
